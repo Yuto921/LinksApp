@@ -1,0 +1,57 @@
+[.env ファイル]
+DB_CONNECTION=mysql
+？なんで
+-> DB_HOST=127.0.0.1　＝localhost
+-> DB_PORT=3306 = データベースの基本のポート
+DB_DATABASE=Sites
+DB_USERNAME=root
+DB_PASSWORD=
+# XAMPPを使う場合に必要な設定
+DB_SOCKET=/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock
+
+
+[LinkRequest ファイル]
+    public function authorize()
+    {
+        // return false; //403エラー
+        ? なんで
+        return true; // 正常動作
+    }
+
+authorize()について
+Requestの拡張クラスにあったauthorizeというメソッド。これは権限に関する判定を行うもの。
+学校　英語フィリピンA,B　インターンA　日本人A,B,C　ログインしている人の情報をもとに権限を与える
+使わなければtrueを返しておく。falseを返した場合は403ステータスコードのレスポンスが返される。
+
+（例）管理者権限を持っているユーザにのみ許可
+
+CreateUserRequest.php
+public function authorize() {
+    if(!session()->has('isAdmin')) {
+        return false;
+    }
+    return true;
+}
+
+
+// 403エラー
+データベース接続？
+ルーティング？ php artisan route:list route:clear
+ルーティングって何？　＝　ネットワーク上で行われる道案内 (通信において、通信相手までの経路を判断する仕組み)
+データベースの所有権？
+
+// バリデーション
+フォームに入力された値を自動的に確認する
+入力値のバリデーション機能があると、フォームに入力してほしい項目が正しい形式で入力されているを確認することができる
+(例)
+    氏名 – 未入力チェック、文字の長さチェック
+    メールアドレス – 未入力チェック、形式チェック
+    性別 – 未入力チェック、形式チェック
+    年齢 – 未入力チェック、形式チェック
+    お問い合わせ内容 – 未入力チェック
+    プライバシーポリシーに同意 – 未入力チェック、形式チェック
+
+
+バリデーション
+エラー時: 入力値とエラー情報を付与して前のページに自動でリダイレクト -> (用意されている)$errorsに結果が引数(Requestのrules()で指定した)とセットで返ってくるってこと？
+成功: バリデーションをパスした時に初めてコントローラー内の処理に移る -> 指定した引数で値が取得できる？
